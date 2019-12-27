@@ -1,0 +1,47 @@
+
+html {
+	height: 100%;
+	background-color: black;
+	background: url("../img/background.png") no-repeat center center fixed;
+}
+
+body {
+	margin-left: 15vw;
+	width: 70vw;
+}
+
+.main-header {
+	padding-top: 15px;
+	display: block;
+}
+
+.main-header h1, h2 {
+	text-align: center;
+	font-family: Calibri, 'Trebuchet MS', sans-serif;
+	color: rgba(255, 255, 255, .8);
+	font-size: 425%;
+}
+
+.main-header h2 {
+	color: rgba(255, 255, 255, .7);
+	font-size: 100%;
+}
+
+#link-box {
+	display: inline-flex;
+	justify-content: center;
+	padding-top: 20px;
+	padding-bottom: 10px;
+	width: 100%;
+	height: 30px;
+}
+
+.social-link {
+	width: 30px;
+	margin: 0 15px 0 15px;
+}
+
+.social-link img {
+	width: 100%;
+	height: 100%;
+}
