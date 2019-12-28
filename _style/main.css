@@ -56,11 +56,25 @@ a {
 /* Content */
 .content-pane {
 	display: flex;
-	margin-top: 10px;
-	margin-bottom: 10px;
+	flex-direction: column;
+	padding-top: 25px;
+	padding-bottom: 10px;
+}
+
+.pane-title {
+	color: rgba(255, 255, 255, .8);
+	font-size: 1.35vw;
+	width: 100%;
+	clear: both;
+	text-align: center;
+	text-decoration: underline;
 }
 
 /* Main Content */
+#summary-pane {
+	flex-direction: row;
+}
+
 #portrait {
 	flex-grow: 1;
 }
@@ -79,11 +93,24 @@ a {
 	text-align: justify;
 	flex-grow: 7;
 	color: rgba(255, 255, 255, .8);
-	font-size: 150%;
+	font-size: 1.3vw;
 	line-height: 125%;
 }
 #biography > div {
-	font-size: 175%;
+	font-size: 1.5vw;
 	flex-grow: 3;
 	text-align: center;
+}
+
+/* Papers */
+.paper-ref {
+	width: 80%;
+	padding-top: 15px;
+	margin-left: 10%;
+	color: rgba(255, 255, 255, .8);
+	font-size: 1vw;
+}
+
+.author-self {
+	font-weight: bold;
 }
