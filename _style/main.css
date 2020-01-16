@@ -18,7 +18,7 @@ a {
 
 /* Header (Name and Link Bar) */
 .main-header {
-	padding-top: 15px;
+	padding-top: 40px;
 	display: block;
 	padding-bottom: 50px;
 }
@@ -77,18 +77,18 @@ a {
 }
 
 #portrait {
-	flex-grow: 1;
+	flex-grow: 10;
 }
 #portrait > img {
 	padding-left: 10%;
-	width: 80%;
+	width: 60%;
 }
 
 #biography {
 	display: flex;
 	flex-direction: column;
-	flex-grow: 2;
-	padding-right: 5%;
+	flex-grow: 30;
+	padding-right: 10%;
 }
 #biography > p {
 	text-align: justify;
