@@ -59,6 +59,7 @@ a {
 	flex-direction: column;
 	padding-top: 25px;
 	padding-bottom: 25px;
+	justify-content: space-between;
 }
 
 .pane-title {
@@ -72,35 +73,30 @@ a {
 
 /* Main Content */
 #summary-pane {
-	padding-bottom: 25px;
 	flex-direction: row;
+	margin-left: 5%;
+	margin-right: 5%;
+	align-items: center;
 }
 
 #portrait {
-	flex-grow: 10;
+	flex: 30%;
+	margin-right: 25px;
 }
+
 #portrait > img {
-	padding-left: 10%;
-	width: 60%;
+	width: 90%;
 }
 
 #biography {
-	display: flex;
-	flex-direction: column;
-	flex-grow: 30;
-	padding-right: 10%;
+	flex: 70%;
 }
 #biography > p {
+	align-self: center;
 	text-align: justify;
-	flex-grow: 7;
 	color: rgba(255, 255, 255, .8);
-	font-size: 1.3vw;
+	font-size: 1.25vw;
 	line-height: 125%;
-}
-#biography > div {
-	font-size: 1.5vw;
-	flex-grow: 3;
-	text-align: center;
 }
 
 /* Papers */
