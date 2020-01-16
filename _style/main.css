@@ -8,7 +8,7 @@ html {
 body {
 	margin-left: 19vw;
 	width: 62vw;
-	font-family: Calibri, 'Trebuchet MS', sans-serif;
+	font-family: 'Gadugi','Trebuchet MS', sans-serif;
 }
 
 a {
@@ -58,7 +58,7 @@ a {
 	display: flex;
 	flex-direction: column;
 	padding-top: 25px;
-	padding-bottom: 10px;
+	padding-bottom: 25px;
 }
 
 .pane-title {
@@ -72,6 +72,7 @@ a {
 
 /* Main Content */
 #summary-pane {
+	padding-bottom: 25px;
 	flex-direction: row;
 }
 
@@ -109,6 +110,17 @@ a {
 	margin-left: 10%;
 	color: rgba(255, 255, 255, .8);
 	font-size: 1vw;
+}
+
+/* CV */
+.cv-ref {
+	width: 80%;
+	padding-top: 15px;
+	padding-bottom: 20px;
+	margin-left: 10%;
+	color: rgba(255, 255, 255, .8);
+	font-size: 1.5vw;
+	text-align: center;
 }
 
 .author-self {
