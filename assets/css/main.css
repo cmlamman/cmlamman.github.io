@@ -115,7 +115,7 @@ input, select, textarea {
 /* Type */
 
 	body, input, select, textarea {
-		color: rgba(255, 255, 255, 0.55);
+		color: rgba(255, 255, 255, 0.83);
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 16.5pt;
 		font-weight: normal;
@@ -2536,7 +2536,7 @@ input, select, textarea {
 			}
 
 				.wrapper.style1 .icon.major:before {
-					color: #5e42a6;
+					color: #214862;
 				}
 
 				.wrapper.style1-alt .icon.major:before {
@@ -2552,11 +2552,11 @@ input, select, textarea {
 				}
 
 				.wrapper.style3 .icon.major:before {
-					color: #b74e91;
+					color: #16a89f;
 				}
 
 				.wrapper.style3-alt .icon.major:before {
-					color: #953d75;
+					color: #16a89f;
 				}
 
 /* Image */
@@ -3349,6 +3349,27 @@ input, select, textarea {
 
 /* Wrapper */
 
+@media (max-width: 980px) {
+    .wrapper.style2.spotlights .image,
+    .wrapper.style3.fade-up .features .image {
+        display: none; /* Hide images on screens narrower than 1280px */
+    }
+
+    .wrapper.style2.spotlights .content,
+    .wrapper.style3.fade-up .features .content {
+        order: 1; /* Ensure text is displayed */
+        position: relative;
+        z-index: 1;
+        background: rgba(0, 0, 0, 0.674); /* Optional: Add a background to make text readable */
+        padding: 10px;
+    }
+
+    .wrapper.style2.spotlights .content .inner,
+    .wrapper.style3.fade-up .features .inner {
+        text-align: center; /* Center the text */
+    }
+}
+
 	.wrapper {
 		position: relative;
 	}
@@ -3388,7 +3409,7 @@ input, select, textarea {
 		}
 
 		.wrapper.style1 {
-			background-color: #0a2b5e;
+			background-color: #000000;
 		}
 
 		.wrapper.style4 {
@@ -3400,15 +3421,15 @@ input, select, textarea {
 		}
 
 		.wrapper.style2 {
-			background-color: #5052b5;
+			background-color: #1d3a4e;
 		}
 
 		.wrapper.style2-alt {
-			background-color: #3e4094;
+			background-color: #1d3a4e;
 		}
 
 		.wrapper.style3 {
-			background-color: #3f2840;
+			background-color: #271b27; /* background color of outreach section */
 		}
 
 		.wrapper.style3-alt {
@@ -3522,7 +3543,7 @@ input, select, textarea {
 		display: -webkit-flex;
 		display: -ms-flex;
 		display: flex;
-		background-color: #0f042b
+		background-color: #000000
 		cursor: default;
 		padding: 1.75em 2em;
 	}
@@ -3676,7 +3697,7 @@ input, select, textarea {
 
 	#sidebar {
 		padding: 2.5em 2.5em 0.5em 2.5em ;
-		background: #0e0524;
+		background: #000000;
 		cursor: default;
 		height: 100vh;
 		left: 0;
@@ -4009,12 +4030,12 @@ input, select, textarea {
 
 						#sidebar nav a:after {
 							background-image: none;
-							background-color: #b74e91;
+							background-color: #21ecde;
 						}
 
 		}
 
-		@media screen and (max-width: 736px) {
+		@media screen and (max-width: 420px) {
 
 			#sidebar {
 				display: none;
@@ -4026,7 +4047,7 @@ input, select, textarea {
 
 	#intro {
 		background-attachment: fixed;
-		background-image: url("images/galaxy-background.jpg");
+		background-image: url("images/galaxy-background.png");
 		background-position: top right;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -4100,7 +4121,7 @@ input, select, textarea {
 
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* Caption text */
