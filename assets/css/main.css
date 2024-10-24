@@ -2525,7 +2525,7 @@ input, select, textarea {
 			display: block;
 			background: #ffffff;
 			border-radius: 100%;
-			color: #312450;
+			color: #000000;
 			text-align: center;
 			line-height: 2.5em;
 			margin: 0 0 1.3em 0;
@@ -3156,7 +3156,7 @@ input, select, textarea {
 			border-radius: 0;
 			display: block;
 			position: relative;
-			width: 20em;
+			width: 30em;
 		}
 
 			.spotlights2 > section > .image img {
@@ -3191,7 +3191,7 @@ input, select, textarea {
 			-webkit-flex-direction: column;
 			-ms-flex-direction: column;
 			flex-direction: column;
-			-moz-justify-content: center;
+			-moz-justify-content: left;
 			-webkit-justify-content: center;
 			-ms-justify-content: center;
 			justify-content: center;
