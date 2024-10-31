@@ -2525,7 +2525,7 @@ input, select, textarea {
 			display: block;
 			background: #ffffff;
 			border-radius: 100%;
-			color: #000000;
+			color: #312450;
 			text-align: center;
 			line-height: 2.5em;
 			margin: 0 0 1.3em 0;
@@ -3096,34 +3096,20 @@ input, select, textarea {
 
 		@media screen and (max-width: 980px) {
 
-			.spotlights > section {
-				display: block;
+			.spotlights > section > .image {
+				display: none; /* remove image on mobile */
 			}
 
-				.spotlights > section > .image {
-					width: 100%;
-					height: 50vh;
-				}
-
-				.spotlights > section > .content {
-					width: 100%;
-				}
-
-				.spotlights > section.inactive > .content > .inner,
-				body.is-preload .spotlights > section > .content > .inner {
-					-moz-transform: translateY(1em);
-					-webkit-transform: translateY(1em);
-					-ms-transform: translateY(1em);
-					transform: translateY(1em);
-				}
+			.spotlights > section > .content {
+				padding: 3em 2em 1em 2em ;
+			}
 
 		}
 
 		@media screen and (max-width: 736px) {
 
 			.spotlights > section > .image {
-				height: 50vh;
-				min-height: 15em;
+				display: none; /* remove image on mobile */
 			}
 
 			.spotlights > section > .content {
@@ -3241,36 +3227,37 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 980px) {
+		/*
+				@media screen and (max-width: 980px) {
 
-			.spotlights2 > section {
-				display: block;
-			}
+					.spotlights2 > section {
+						display: block;
+					}
 
-				.spotlights2 > section > .image {
-					width: 100%;
-					height: 50vh;
+						.spotlights2 > section > .image {
+							width: 100%;
+							height: 50vh;
+						}
+
+						.spotlights2 > section > .content {
+							width: 100%;
+						}
+
+						.spotlights2 > section.inactive > .content > .inner,
+						body.is-preload .spotlights2 > section > .content > .inner {
+							-moz-transform: translateY(1em);
+							-webkit-transform: translateY(1em);
+							-ms-transform: translateY(1em);
+							transform: translateY(1em);
+						}
+
 				}
-
-				.spotlights2 > section > .content {
-					width: 100%;
-				}
-
-				.spotlights2 > section.inactive > .content > .inner,
-				body.is-preload .spotlights2 > section > .content > .inner {
-					-moz-transform: translateY(1em);
-					-webkit-transform: translateY(1em);
-					-ms-transform: translateY(1em);
-					transform: translateY(1em);
-				}
-
-		}
+		*/
 
 		@media screen and (max-width: 736px) {
 
 			.spotlights2 > section > .image {
-				height: 50vh;
-				min-height: 15em;
+				display: none; /* remove image on mobile */
 			}
 
 			.spotlights2 > section > .content {
@@ -3606,7 +3593,7 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 480px) {
+		@media screen and (max-width: 240px) {  /* top banner visibility on mobile */
 
 			#header {
 				display: block;
@@ -4035,7 +4022,7 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 420px) {
+		@media screen and (max-width: 210) {
 
 			#sidebar {
 				display: none;
