@@ -2583,8 +2583,21 @@ input, select, textarea {
 
 		.image.left {
 			float: left;
-			margin: 0 1.5em 1em 0;
+			margin: 0 5em 1em 0;
 			top: 0.25em;
+		}
+
+		/* Ensure the image and text never overlap */
+		@media (max-width: 950px) {
+			.image.left {
+				float: none;
+				display: block;
+				margin: 0 auto 20px auto; /* Center the image and add some margin below */
+			}
+
+			.inner p {
+				text-align: justify;
+			}
 		}
 
 		.image.right {
@@ -4149,7 +4162,7 @@ input, select, textarea {
   .active, .slide-number:hover {
 	background-color:  #196767;
   }
-  
+
 /* The dots/bullets/indicators */
 .dot {
   cursor: pointer;
