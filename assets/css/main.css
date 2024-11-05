@@ -4189,3 +4189,12 @@ input, select, textarea {
   from {opacity: .4}
   to {opacity: 1}
 }
+
+.jump-to {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #0000007a;
+    padding: 10px;
+    z-index: 1000; /* Ensure it stays on top of other elements */
+}
