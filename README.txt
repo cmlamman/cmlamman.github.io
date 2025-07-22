@@ -1,4 +1,4 @@
-My Personal Website.
+Personal Website
 
 Used template from
 html5up.net | @ajlkn
