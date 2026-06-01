@@ -1,0 +1,14 @@
+Change main background colors: assests/css/main
+
+.wrapper.alt {background-color: #14092e; }.wrapper.style1 {
+.wrapper.style1-alt {
+.wrapper.style2 {
+
+Sidebar, just background
+
+Lines on side panel: linear-gradient
+
+ToDo:
+- link directly to FAQ from home page
+- add blue sky to social media
+- fix loading time
