@@ -12,3 +12,8 @@ ToDo:
 - link directly to FAQ from home page
 - add blue sky to social media
 - fix loading time
+- add PT hawking cartoon
+- add updated DESI visuals
+
+- add updated papers
+- add additional paper summaries:
