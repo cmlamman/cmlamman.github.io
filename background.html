@@ -33,6 +33,15 @@
             .jump-to a:hover {
                 text-decoration: underline;
             }
+            @media screen and (max-width: 736px) {
+                body {
+                    padding-top: 0;
+                }
+                .jump-to {
+                    position: static;
+                    line-height: 1.8;
+                }
+            }
         </style>
     </head>
     <body class="is-preload">
@@ -91,7 +100,7 @@
                 <div class="inner">
                     <h1 id="intrinsic-alignments" class="major">Intrinsic Alignments</h1>
                     <div style="display: flex; justify-content: center;">
-                        <span class="image"><img src="images/IA_images/ellipticity_e1.png" alt="" style="max-width:500px" /></span>
+                        <span class="image"><img src="images/IA_images/ellipticity_e1.png" alt="" style="max-width:min(500px, 100%)" /></span>
                     </div>
                     <p>The large-scale structure of the Universe leaves its mark on visible matter through subtle correlations involving galaxy shapes, galaxy spins, and the underlying cosmic web. These “Intrinsic Alignments” can only be observed with tens of thousands of galaxies. But how do we quantify them? For the long answer, <a href="https://ui.adsabs.harvard.edu/abs/2024OJAp....7E..14L/abstract"> The IA Guide </a>! For the short answer, keep reading.</p>
                     <p>Individual galaxies are beautifully unique and complex objects. But as an observational cosmologist, I see them as millions of flat ovals on the sky. Each galaxy can be described by a number, ellipticity, which contains information about how round the galaxy is and its orientation.</p>
@@ -104,7 +113,7 @@
                         <a href="doc/IA_cheatsheet.pdf">See the IA Cheat Sheet</a> </p>
                     </div>
                     <div style="display: flex; justify-content: center;">
-                        <span class="image"><img src="images/IA_images/IAcorrelations2.png" alt="" style="max-width:500px" /></span>
+                        <span class="image"><img src="images/IA_images/IAcorrelations2.png" alt="" style="max-width:min(500px, 100%)" /></span>
                     </div>
                 </div>
             </section>
@@ -137,7 +146,7 @@
                 <div class="inner">
                     <h1 id="new-perspective" class="major">A New Perspective on Intrinsic Alignments</h1>
                     <div style="display: flex; justify-content: center;">
-                        <span class="image"><img src="images/IA_images/multipletIA.png" alt="" style="max-width:700px" /></span>
+                        <span class="image"><img src="images/IA_images/multipletIA.png" alt="" style="max-width:min(700px, 100%)" /></span>
                     </div>
 					<br>
                     <p>Intrinsic Alignmnets can bias measurements within cosmology, but they can also be useful! We often trace large-scale structure (LSS) using 

@@ -3543,7 +3543,7 @@ input, select, textarea {
 		display: -webkit-flex;
 		display: -ms-flex;
 		display: flex;
-		background-color: #000000
+		background-color: #000000;
 		cursor: default;
 		padding: 1.75em 2em;
 	}
@@ -4035,7 +4035,7 @@ input, select, textarea {
 
 		}
 
-		@media screen and (max-width: 210) {
+		@media screen and (max-width: 210px) {
 
 			#sidebar {
 				display: none;
@@ -4159,7 +4159,7 @@ input, select, textarea {
 	transition: background-color 0.6s ease;
   }
 
-  .active, .slide-number:hover {
+  .slide-number.active, .slide-number:hover {
 	background-color:  #196767;
   }
 
@@ -4175,7 +4175,7 @@ input, select, textarea {
   transition: background-color 0.6s ease;
 }
 
-.active, .dot:hover {
+.dot.active, .dot:hover {
   background-color: transparent;
 }
 
@@ -4198,3 +4198,141 @@ input, select, textarea {
     padding: 10px;
     z-index: 1000; /* Ensure it stays on top of other elements */
 }
+
+/* Bluesky icon (not in Font Awesome 5, so drawn from an SVG mask) */
+
+	.icon.bluesky:before {
+		content: '';
+		width: 1em;
+		height: 1em;
+		vertical-align: -0.125em;
+		background-color: currentColor;
+		-webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='%23000' d='M407.8 294.7c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3C61.6-9.4 37.5-1.7 21.6 5.5C3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7c3.3-.5 6.6-.9 10-1.4c-3.3 .5-6.6 1-10 1.4C74.3 308.6-9.1 342.8 100.3 464.5C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4c102.4-103.4 28.1-156-65.8-169.9c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3c64.1 7.1 133.6-15.1 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1z'/%3E%3C/svg%3E") center / contain no-repeat;
+		mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 576 512'%3E%3Cpath fill='%23000' d='M407.8 294.7c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3zM288 227.1C261.9 176.4 190.9 81.9 124.9 35.3C61.6-9.4 37.5-1.7 21.6 5.5C3.3 13.8 0 41.9 0 58.4S9.1 194 15 213.9c19.5 65.7 89.1 87.9 153.2 80.7c3.3-.5 6.6-.9 10-1.4c-3.3 .5-6.6 1-10 1.4C74.3 308.6-9.1 342.8 100.3 464.5C220.6 589.1 265.1 437.8 288 361.1c22.9 76.7 49.2 222.5 185.6 103.4c102.4-103.4 28.1-156-65.8-169.9c-3.3-.4-6.7-.8-10-1.3c3.4 .4 6.7 .9 10 1.3c64.1 7.1 133.6-15.1 153.2-80.7C566.9 194 576 75 576 58.4s-3.3-44.7-21.6-52.9c-15.8-7.1-40-14.9-103.2 29.8C385.1 81.9 314.1 176.4 288 227.1z'/%3E%3C/svg%3E") center / contain no-repeat;
+	}
+
+/* Mobile fixes */
+
+	/* Keep images inside the screen */
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.image {
+		max-width: 100%;
+	}
+
+	/* Let action buttons wrap instead of running off the edge */
+	ul.actions {
+		flex-wrap: wrap;
+		row-gap: 1em;
+	}
+
+	@media screen and (max-width: 980px) {
+
+		/* Spotlight images are hidden here, so let the text set the height */
+		.spotlights > section,
+		.spotlights2 > section {
+			max-height: none;
+		}
+
+		/* Center floated thumbnails above their text */
+		.image.left,
+		.image.right {
+			float: none;
+			display: block;
+			max-width: 100%;
+			margin: 1em auto 1.5em auto;
+			top: 0;
+			text-align: center;
+		}
+
+			.image.left img,
+			.image.right img {
+				width: auto;
+				max-width: 100%;
+				margin: 0 auto;
+			}
+
+	}
+
+	@media screen and (max-width: 736px) {
+
+		/* Home page nav: wrap links onto two rows instead of clipping them */
+		#sidebar {
+			position: -webkit-sticky;
+			position: sticky;
+			height: auto;
+			line-height: 2.75em;
+			overflow: visible;
+		}
+
+			#sidebar nav ul {
+				flex-wrap: wrap;
+				justify-content: center;
+				height: auto;
+			}
+
+				#sidebar nav ul li {
+					height: auto;
+					margin: 0 0.6em;
+				}
+
+					#sidebar nav a {
+						letter-spacing: 0.15em;
+					}
+
+		/* Sub-page header: title on its own row, links wrap underneath */
+		#header {
+			flex-wrap: wrap;
+			padding: 1em 1.5em;
+		}
+
+			#header > .title {
+				width: 100%;
+			}
+
+			#header > nav {
+				text-align: left;
+			}
+
+				#header > nav > ul > li {
+					margin: 0 1.25em 0 0;
+				}
+
+					#header > nav > ul > li:first-child {
+						margin-left: 0;
+					}
+
+					#header > nav > ul > li a {
+						padding: 0.5em 0;
+					}
+
+		.features section {
+			padding-left: 1.5em !important;
+		}
+
+		.jump-to {
+			position: static;
+		}
+
+		/* Comic counter above the comic instead of on top of it */
+		.numbertext {
+			position: static;
+			text-align: center;
+		}
+
+	}
+
+	@media screen and (max-width: 480px) {
+
+		/* Long button labels wrap inside the button */
+		.button {
+			white-space: normal;
+			height: auto;
+			line-height: 1.6em;
+			padding: 1.25em 2em;
+		}
+
+	}
