@@ -8,12 +8,273 @@
     <head>
         <title>Claire Lamman - Science Art</title>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="stylesheet" href="assets/css/main.css" />
         <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
         <style>
             body {
-                background-color: #000000; /* Change this to your desired background color */
+                background-color: #000000;
+            }
+
+            /* ---------- Intro note ---------- */
+            .gallery-note {
+                margin: 0 0 2.5em 0;
+                padding: 0.9em 1.25em;
+                border-left: 3px solid #67edf0;
+                background: rgba(255, 255, 255, 0.04);
+                border-radius: 0 6px 6px 0;
+                font-size: 0.85em;
+                line-height: 1.6;
+            }
+
+            /* ---------- Grid (justified rows: every image in a row has the same height, order reads left to right) ---------- */
+            .gallery {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 2em 1.25em;
+                margin: 0 0 2em 0;
+            }
+
+            /* Keeps the last row from stretching */
+            .gallery::after {
+                content: "";
+                flex: 999 1 0;
+            }
+
+            .gallery-item {
+                /* --ar is the image's width / height, set inline on each item */
+                flex: var(--ar) 1 calc(var(--ar) * 15rem);
+                min-width: 0;
+                margin: 0;
+                cursor: pointer;
+            }
+
+            .gallery-item > a {
+                display: block;
+                position: relative;
+                overflow: hidden;
+                border: 0;
+                border-radius: 6px;
+                background: #111;
+                box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+                transition: box-shadow 0.25s ease, transform 0.25s ease;
+            }
+
+            .gallery-item img {
+                display: block;
+                width: 100%;
+                height: auto;
+                aspect-ratio: var(--ar);
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+
+            .gallery-item > a::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent 40%);
+                opacity: 0;
+                transition: opacity 0.25s ease;
+            }
+
+            .gallery-item:hover > a,
+            .gallery-item > a:focus-visible {
+                box-shadow: 0 0 0 2px #5e42a6, 0 0 18px rgba(103, 237, 240, 0.25);
+                transform: translateY(-2px);
+                outline: none;
+            }
+
+            .gallery-item:hover img { transform: scale(1.03); }
+            .gallery-item:hover > a::after { opacity: 1; }
+
+            .gallery-item figcaption {
+                padding-top: 0.7em;
+            }
+
+            .gallery-item h3 {
+                font-size: 0.95em;
+                margin: 0 0 0.2em 0;
+                line-height: 1.35;
+                color: #ffffff;
+                transition: color 0.2s ease;
+            }
+
+            .gallery-item:hover h3 { color: #67edf0; }
+
+            /* In the grid, descriptions are cropped to a few lines; the full text is shown in the viewer */
+            .gallery-item .gallery-desc {
+                font-size: 0.75em;
+                line-height: 1.55;
+                color: rgba(255, 255, 255, 0.6);
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .gallery-item .gallery-desc h4,
+            .gallery-item .gallery-desc .gallery-extra { display: none; }
+
+            .gallery-item .gallery-desc p { display: inline; margin: 0; }
+            .gallery-item .gallery-desc p + p::before { content: " "; }
+
+            @media screen and (max-width: 736px) {
+                .gallery-item { flex-basis: 100%; }
+            }
+
+            /* ---------- Lightbox ---------- */
+            .lightbox {
+                position: fixed;
+                inset: 0;
+                z-index: 20000;
+                display: flex;
+                background: rgba(0, 0, 0, 0.95);
+                opacity: 0;
+                transition: opacity 0.2s ease;
+            }
+
+            .lightbox[hidden] { display: none; }
+            .lightbox.is-open { opacity: 1; }
+
+            .lightbox-stage {
+                position: relative;
+                flex: 1 1 auto;
+                min-width: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 3.5em 4.5em;
+            }
+
+            .lightbox-stage img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                border-radius: 4px;
+                box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            }
+
+            .lightbox-spinner {
+                position: absolute;
+                width: 2.5em;
+                height: 2.5em;
+                border: 3px solid rgba(255, 255, 255, 0.15);
+                border-top-color: #67edf0;
+                border-radius: 50%;
+                animation: lb-spin 0.8s linear infinite;
+            }
+
+            @keyframes lb-spin { to { transform: rotate(360deg); } }
+
+            .lightbox-info {
+                flex: 0 0 26em;
+                max-width: 40%;
+                overflow-y: auto;
+                padding: 4em 2em 2em 2em;
+                background: #0b0b12;
+                border-left: 1px solid rgba(255, 255, 255, 0.08);
+                font-size: 0.8em;
+                line-height: 1.65;
+            }
+
+            .lightbox-info .lightbox-counter {
+                font-size: 0.8em;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: rgba(255, 255, 255, 0.45);
+                margin: 0 0 0.75em 0;
+            }
+
+            .lightbox-info h3 {
+                font-size: 1.35em;
+                margin: 0 0 0.9em 0;
+                line-height: 1.35;
+                color: #ffffff;
+            }
+
+            .lightbox-info h4 {
+                font-size: 0.8em;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #67edf0;
+                margin: 1.5em 0 0.5em 0;
+            }
+
+            .lightbox-info p { margin: 0 0 1em 0; }
+            .lightbox-info ul { margin: 0 0 1em 0; }
+
+            .lightbox-fullres {
+                display: inline-block;
+                margin-top: 1em;
+                padding: 0.6em 1.1em;
+                border: 0;
+                border-radius: 4px;
+                background-image: linear-gradient(to right, #5e42a6, #196767);
+                color: #ffffff !important;
+                font-size: 0.95em;
+                font-weight: bold;
+            }
+
+            .lightbox-fullres:hover { filter: brightness(1.2); }
+
+            .lightbox-fullres small {
+                display: block;
+                font-weight: normal;
+                opacity: 0.75;
+                font-size: 0.8em;
+            }
+
+            /* Reset the theme's button styles for the viewer controls */
+            .lightbox button {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.6em;
+                height: 2.6em;
+                padding: 0;
+                margin: 0;
+                line-height: 1;
+                letter-spacing: 0;
+                font-size: 1.1em;
+                color: #ffffff !important;
+                background: rgba(255, 255, 255, 0.08);
+                box-shadow: none;
+                border: 0;
+                border-radius: 50%;
+                cursor: pointer;
+                z-index: 2;
+                transition: background 0.2s ease;
+            }
+
+            .lightbox button:hover,
+            .lightbox button:focus-visible {
+                background: rgba(94, 66, 166, 0.85);
+                outline: none;
+            }
+
+            .lightbox-close { top: 0.8em; right: 0.8em; }
+            .lightbox-prev { left: 0.8em; top: 50%; transform: translateY(-50%); }
+            .lightbox-next { right: 0.8em; top: 50%; transform: translateY(-50%); }
+
+            @media screen and (max-width: 980px) {
+                .lightbox { flex-direction: column; }
+                .lightbox-stage { flex: 0 0 58%; padding: 3.5em 3.5em 1em 3.5em; }
+                .lightbox-info {
+                    flex: 1 1 auto;
+                    max-width: none;
+                    border-left: 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.08);
+                    padding: 1.5em 1.5em 2em 1.5em;
+                    font-size: 0.9em;
+                }
+                .lightbox-close { position: fixed; }
+            }
+
+            @media screen and (max-width: 480px) {
+                .lightbox-stage { padding: 3.5em 0.5em 0.5em 0.5em; }
+                .lightbox-prev, .lightbox-next { top: auto; bottom: 0.5em; transform: none; }
             }
         </style>
     </head>
@@ -37,93 +298,244 @@
             <section id="main" class="wrapper">
                 <div class="inner">
                     <h1 class="major">Science Art and Visualizations</h1>
-                    <hr />
-                    <!-- Slideshow container -->
-                    <div class="slideshow-container">
-                        <!-- Full-width images with number and caption text -->
-                        <div class="mySlides fade">
-                            <div class="numbertext">1</div>
-                            <center><img src="Art/L_tension.png" style="width:80%"></center>
-                            <div class="text">Something must give. A visualization of <a href="https://newscenter.lbl.gov/2025/03/19/new-desi-results-strengthen-hints-that-dark-energy-may-evolve/">recent dark energy results from the DESI Survey.</a>Credit: Claire Lamman</div>
-                        </div>
-                        
-                        <div class="mySlides fade">
-                            <div class="numbertext">2</div>
-                            <center><img src="Art/cosmic_cartography.png" style="width:80%"></center>
-                            <div class="text">Cosmic Cartography. An old-style map celebrating DESI's efforts to chart the Universe. See <a href="blog_links.html"> this blog post </a> 
-                                for a description of the details. Credit: Claire Lamman</div>
-                        </div>
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">3</div>
-                            <center><img src="Art/slice_zoom.png" style="width:80%"></center>
-                            <div class="text">This key figure used in DESI's Y1 the press release, displaying a narrow band on the sky spanning 190 degrees in right ascension and 14 degrees in declination. 
-                                The magnified section consists of galaxies from our Bright Galaxy Sample and extends to a redshift of 0.2. The colors are scaled by declination to show depth in the slice: darker colors are "behind" brighter structure.
-                                In the background "butterfly", colors correspond to different types of galaxies observed: Bright Galaxy Survey, Luminous Red Galaxies, Emission Line Galaxies, and Quasars.
-                                This represents less than 0.1% of our full survey volume. Image credit: Claire Lamman/DESI collaboration; custom colormap package by cmastro.</div>
-                        </div>
 
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">4</div>
-                            <center><img src="Art/cake_collage_science.png" style="width:90%"></center>
-                            <div class="text">I create many astro-themed treats! To see all bakes and descriptions of the 
-                                science which inspired them, see my <a href="https://www.instagram.com/lamman_cake/?hl=en">instagram</a>.</div>
-                        </div>
+                    <p class="gallery-note">
+                        Click images to see full resolution and more information. Unless otherwise stated, all images can be used for
+                        non-commercial purposes, with credit to Claire Lamman
+                        (<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>).
+                    </p>
 
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">5</div>
-                            <center><img src="Art/cfa_vs_desi_stickman.gif" style="width:80%"></center>
-                            <div class="text">Comparison between the famous CfA "stickman" and the same slice with DESI Y1 galaxies. See <a href="https://www.desi.lbl.gov/2024/03/11/a-record-breaking-night/"> 
-                                this blog post </a> for more information. Credit: Claire Lamman | The CfA Redshift Survey: Data for the NGP +30 Zone. Huchra, Geller, de Lapparent, Corwin 1990</div>
-                        </div>
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">6</div>
-                            <center><img src="Art/desi_1.png" style="width:40%"></center>
-                            <div class="text">Design of DESI's LSS map and focal plane. Credit: Claire Lamman</div>
-                        </div>
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">7</div>
-                            <center><img src="Art/bao_vis_with_overlaps.gif" style="width:80%"></center>
-                            <div class="text">Visualization of BAO created for DESI's Y1 press release. For the final visualzation, see 
-                                <a href="https://www.youtube.com/watch?v=hoOyOAAj4iY">this video from Berkeley Lab. </a> Credit: Claire Lamman</div>
-                        </div>
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">8</div>
-                            <center><img src="Art/rsd_mock_Y1_visual_1.gif" style="width:80%"></center>
-                            <div class="text">Visualization of RSD created for a DESI press release (Press release and high quality imaage coming soon!). </a> Credit: Claire Lamman</div>
-                        </div>
+                    <!--
+                        Gallery items. To add one:
+                          1. Put the original in Art/ and run: python assets/scripts/make_gallery_images.py
+                             (creates Art/thumbs/<name>.webp and Art/web/<name>.webp; GIFs use the original directly)
+                          2. Copy a <figure> below. --ar is the image's width / height.
+                             href = full-resolution original, data-preview = image shown in the viewer,
+                             data-size = label for the full-resolution link.
+                          3. Text inside .gallery-desc is cropped in the grid and shown in full in the viewer.
+                             Anything with class "gallery-extra" (and any <h4>) only appears in the viewer.
+                    -->
+                    <div class="gallery">
 
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">9</div>
-                            <center><img src="Art/BaoBan_comics.png" style="width:80%"></center>
-                            <div class="text"> A series of comics featuring DESI's ambassador, BaoBan. <a href="baoban_comics.html" class="active">Click here to see the full series. </a> Credit: Claire Lamman</div>
-                        </div>
-                        
-                        <div class="mySlides fade" style="text-align:center">
-                            <div class="numbertext">10</div>
-                            <center><img src="Art/astrobake1.png" style="width:40%"></center>
-                            <div class="text">Made for fun during a boring observing night. </a> Credit: Claire Lamman</div>
-                        </div>
+                        <figure class="gallery-item" id="desi-y5-butterfly" style="--ar:1.533">
+                            <a href="Art/DESI-Y5-butterfly-cool.png" data-preview="Art/web/DESI-Y5-butterfly-cool.webp" data-size="12383 × 8076 px, 99 MB">
+                                <img src="Art/thumbs/DESI-Y5-butterfly-cool.webp" width="1000" height="652" loading="lazy"
+                                     alt="Wedge-shaped map of galaxies from DESI's 5-year survey with a magnified circular inset of cosmic web structure" />
+                            </a>
+                            <figcaption>
+                                <h3>A slice of DESI's 5-year survey</h3>
+                                <div class="gallery-desc">
+                                    <p>A thin slice of DESI's original 5-year survey. Earth is at the center of the wedge, with a slice from the North Galactic cap
+                                        (above the Milky Way) on top and the South Galactic cap (below the Milky Way) on bottom. The gap between them is dark
+                                        because it contains galaxies obscured by our own galaxy.</p>
+                                    <p>Light from the furthest galaxies shown is 11 billion years old by the time it reaches Earth; leaving those galaxies when
+                                        the universe was just ⅕ its current age and ⅓ its current size!</p>
+                                    <p>The enhanced section contains DESI's Bright Galaxy Survey, which traces the large-scale structure of the universe.
+                                        This section extends about 1 Gpc away from Earth, or 3.3 billion light years, or 20,000,000,000,000,000,000,000 miles (2e22).</p>
+                                    <div class="gallery-extra">
+                                        <h4>Full butterfly</h4>
+                                        <p>A 3 degree slice of sky, extending out to redshift z ~ 4.<br />
+                                            Full NGC slice: 2 &lt; DEC &lt; 5 deg<br />
+                                            Full SGC slice: &minus;10 &lt; DEC &lt; &minus;7 deg</p>
+                                        <p>Colors represent the different DESI tracers, in order of distance from Earth: Bright Galaxy Sample (a dense sample of all
+                                            types of galaxies), Luminous Red Galaxies (big red ellipticals), Emission Line Galaxies (mostly blue spiral galaxies),
+                                            and the most distant are Quasars.</p>
+                                        <h4>Enhanced butterfly</h4>
+                                        <p>A 10 degree slice of sky, extending out to redshift z ~ 0.2.<br />
+                                            NGC slice: &minus;5 &lt; DEC &lt; 5 deg<br />
+                                            SGC slice: &minus;15 &lt; DEC &lt; &minus;5 deg</p>
+                                        <p>Colors and transparency of the points are scaled by DEC, i.e. brighter colors trace structure 'in front of' darker
+                                            background galaxies.</p>
+                                        <p><a href="https://newscenter.lbl.gov/2026/04/15/desi-completes-planned-3d-map-of-the-universe-and-continues-exploring/">Original press release</a>.
+                                            Credit: Claire Lamman / DESI Collaboration</p>
+                                    </div>
+                                </div>
+                            </figcaption>
+                        </figure>
 
-                        <!-- Next and previous buttons -->
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    </div>
-                    <br>
-                    <!-- The numbers -->
-                    <div style="text-align:center">
-                        <span class="slide-number" onclick="currentSlide(1)">1</span>
-                        <span class="slide-number" onclick="currentSlide(2)">2</span>
-                        <span class="slide-number" onclick="currentSlide(3)">3</span>
-                        <span class="slide-number" onclick="currentSlide(4)">4</span>
-                        <span class="slide-number" onclick="currentSlide(5)">5</span>
-                        <span class="slide-number" onclick="currentSlide(6)">6</span>
-                        <span class="slide-number" onclick="currentSlide(7)">7</span>
-                        <span class="slide-number" onclick="currentSlide(8)">8</span>
-                        <span class="slide-number" onclick="currentSlide(9)">9</span>
-                        <span class="slide-number" onclick="currentSlide(10)">10</span>
+                        <figure class="gallery-item" id="l-tension" style="--ar:1.470">
+                            <a href="Art/L_tension.png" data-preview="Art/web/L_tension.webp" data-size="3840 × 2612 px, 1.5 MB">
+                                <img src="Art/thumbs/L_tension.webp" width="1000" height="680" loading="lazy"
+                                     alt="Illustration of tension in dark energy measurements" />
+                            </a>
+                            <figcaption>
+                                <h3>Something must give</h3>
+                                <div class="gallery-desc">
+                                    <p>A visualization of <a href="https://newscenter.lbl.gov/2025/03/19/new-desi-results-strengthen-hints-that-dark-energy-may-evolve/">recent
+                                        dark energy results from the DESI Survey</a>. Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="cosmic-cartography" style="--ar:1.328">
+                            <a href="Art/cosmic_cartography.png" data-preview="Art/web/cosmic_cartography.webp" data-size="6006 × 4523 px, 45 MB">
+                                <img src="Art/thumbs/cosmic_cartography.webp" width="1000" height="753" loading="lazy"
+                                     alt="Old-style illustrated map of the Universe" />
+                            </a>
+                            <figcaption>
+                                <h3>Cosmic Cartography</h3>
+                                <div class="gallery-desc">
+                                    <p>An old-style map celebrating DESI's efforts to chart the Universe. See <a href="blog_links.html">this blog post</a>
+                                        for a description of the details. Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="cfa-vs-desi" style="--ar:1.778">
+                            <a href="Art/cfa_vs_desi_stickman.gif" data-preview="Art/cfa_vs_desi_stickman.gif" data-size="1280 × 720 px animated GIF, 3.5 MB">
+                                <img src="Art/cfa_vs_desi_stickman.gif" width="1280" height="720" loading="lazy"
+                                     alt="Animation comparing the CfA stickman galaxy map with the same slice from DESI Year 1" />
+                            </a>
+                            <figcaption>
+                                <h3>The CfA "stickman," then and now</h3>
+                                <div class="gallery-desc">
+                                    <p>Comparison between the famous CfA "stickman" and the same slice with DESI Y1 galaxies. See
+                                        <a href="https://www.desi.lbl.gov/2024/03/11/a-record-breaking-night/">this blog post</a> for more information.
+                                        Credit: Claire Lamman | The CfA Redshift Survey: Data for the NGP +30 Zone. Huchra, Geller, de Lapparent, Corwin 1990</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="desi-design" style="--ar:1">
+                            <a href="Art/desi_1.png" data-preview="Art/web/desi_1.webp" data-size="5376 × 5376 px, 5.9 MB">
+                                <img src="Art/thumbs/desi_1.webp" width="1000" height="1000" loading="lazy"
+                                     alt="Circular design combining DESI's large-scale structure map and focal plane" />
+                            </a>
+                            <figcaption>
+                                <h3>DESI's map and focal plane</h3>
+                                <div class="gallery-desc">
+                                    <p>Design of DESI's LSS map and focal plane. Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="dr1-milky-way" style="--ar:1.201">
+                            <a href="Art/DR1_MW_dark.png" data-preview="Art/web/DR1_MW_dark.webp" data-size="3057 × 2546 px, 3.9 MB">
+                                <img src="Art/thumbs/DR1_MW_dark.webp" width="1000" height="833" loading="lazy"
+                                     alt="Milky Way stars from DESI DR1 plotted by distance from the galactic plane, colored by metallicity" />
+                            </a>
+                            <figcaption>
+                                <h3>Milky Way stars in DESI DR1</h3>
+                                <div class="gallery-desc">
+                                    <p>Distribution of Milky Way stars in DESI's first data release. The colors of individual points represent spectroscopically
+                                        inferred iron abundance, and the thin curves represent the stellar mass density of the galactic disk.
+                                        Published in <a href="https://iopscience.iop.org/article/10.3847/1538-3881/ae4c43">DESI Collaboration et al., 2026</a>.</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="rsd" style="--ar:1.399">
+                            <a href="Art/rsd_mock_Y1_visual_1.gif" data-preview="Art/rsd_mock_Y1_visual_1.gif" data-size="600 × 429 px animated GIF, 5.8 MB">
+                                <img src="Art/rsd_mock_Y1_visual_1.gif" width="600" height="429" loading="lazy"
+                                     alt="Animation illustrating redshift-space distortions" />
+                            </a>
+                            <figcaption>
+                                <h3>Redshift-space distortions</h3>
+                                <div class="gallery-desc">
+                                    <p>Visualization of RSD created for a DESI press release (press release and high quality image coming soon!).
+                                        Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="bao" style="--ar:1.777">
+                            <a href="Art/bao_vis_with_overlaps.gif" data-preview="Art/bao_vis_with_overlaps.gif" data-size="853 × 480 px animated GIF, 1.3 MB">
+                                <img src="Art/bao_vis_with_overlaps.gif" width="853" height="480" loading="lazy"
+                                     alt="Animation illustrating baryon acoustic oscillations" />
+                            </a>
+                            <figcaption>
+                                <h3>Baryon acoustic oscillations</h3>
+                                <div class="gallery-desc">
+                                    <p>Visualization of BAO created for DESI's Y1 press release. For the final visualization, see
+                                        <a href="https://www.youtube.com/watch?v=hoOyOAAj4iY">this video from Berkeley Lab</a>. Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="y1-slice" style="--ar:1.429">
+                            <a href="Art/slice_zoom.png" data-preview="Art/web/slice_zoom.webp" data-size="4288 × 3000 px, 12.5 MB">
+                                <img src="Art/thumbs/slice_zoom.webp" width="1000" height="700" loading="lazy"
+                                     alt="Wedge-shaped slice of DESI Year 1 galaxies with a magnified section" />
+                            </a>
+                            <figcaption>
+                                <h3>DESI Year 1 slice</h3>
+                                <div class="gallery-desc">
+                                    <p>This key figure was used in DESI's Y1 press release, displaying a narrow band on the sky spanning 190 degrees in right ascension
+                                        and 14 degrees in declination. The magnified section consists of galaxies from our Bright Galaxy Sample and extends to a
+                                        redshift of 0.2. The colors are scaled by declination to show depth in the slice: darker colors are "behind" brighter structure.</p>
+                                    <p>In the background "butterfly", colors correspond to different types of galaxies observed: Bright Galaxy Survey, Luminous Red
+                                        Galaxies, Emission Line Galaxies, and Quasars. This represents less than 0.1% of our full survey volume.</p>
+                                    <p>Image credit: Claire Lamman / DESI Collaboration; custom colormap package by cmastro.</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="dr1-butterfly" style="--ar:1">
+                            <a href="Art/DR1_butterfly_bgs1p.png" data-preview="Art/web/DR1_butterfly_bgs1p.webp" data-size="3000 × 3000 px, 10.6 MB">
+                                <img src="Art/thumbs/DR1_butterfly_bgs1p.webp" width="1000" height="1000" loading="lazy"
+                                     alt="Butterfly-shaped slice of the Universe from DESI DR1 with an inset of the Bright Galaxy Survey" />
+                            </a>
+                            <figcaption>
+                                <h3>A slice of the Universe from DESI DR1</h3>
+                                <div class="gallery-desc">
+                                    <p>Slice of the Universe mapped by DR1 drawn from a small wedge of the DESI footprint between ±5° in decl. out to z ≈ 4.
+                                        We render the four major extragalactic samples (BGS galaxies, LRGs, ELGs, and QSOs) using yellow, orange, blue, and green
+                                        points, respectively. Within each target class, the shade of the color maps to decl. (lighter colors correspond to higher decl.).</p>
+                                    <p>The inset shows a subset of the BGS survey extending out to redshift z = 0.2, highlighting the LSS traced by galaxies in the
+                                        densest survey region. For reference, this small wedge of the BGS survey represents less than 0.1% of the comoving
+                                        cosmological volume in DR1.</p>
+                                    <p>Published in <a href="https://iopscience.iop.org/article/10.3847/1538-3881/ae4c43">DESI Collaboration et al., 2026</a>.</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="baoban-comics" style="--ar:1.562">
+                            <a href="Art/BaoBan_comics.png" data-preview="Art/web/BaoBan_comics.webp" data-size="2684 × 1718 px, 5.2 MB">
+                                <img src="Art/thumbs/BaoBan_comics.webp" width="1000" height="640" loading="lazy"
+                                     alt="Collage of BaoBan comic panels" />
+                            </a>
+                            <figcaption>
+                                <h3>BaoBan comics</h3>
+                                <div class="gallery-desc">
+                                    <p>A series of comics featuring DESI's ambassador, BaoBan. <a href="baoban_comics.html">Click here to see the full series</a>.
+                                        Credit: Claire Lamman</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
+                        <figure class="gallery-item" id="astro-bakes" style="--ar:1.860">
+                            <a href="Art/cake_collage_science.png" data-preview="Art/web/cake_collage_science.webp" data-size="4206 × 2261 px, 16 MB">
+                                <img src="Art/thumbs/cake_collage_science.webp" width="1000" height="538" loading="lazy"
+                                     alt="Collage of astronomy-themed cakes and baked goods" />
+                            </a>
+                            <figcaption>
+                                <h3>Astro-themed bakes</h3>
+                                <div class="gallery-desc">
+                                    <p>I create many astro-themed treats! To see all bakes and descriptions of the science which inspired them, see my
+                                        <a href="https://www.instagram.com/lamman_cake/?hl=en">Instagram</a>.</p>
+                                </div>
+                            </figcaption>
+                        </figure>
+
                     </div>
                 </div>
             </section>
+        </div>
+
+        <!-- Lightbox (filled in by the script below) -->
+        <div class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+            <div class="lightbox-stage">
+                <div class="lightbox-spinner" hidden></div>
+                <img alt="" />
+                <button type="button" class="lightbox-prev" aria-label="Previous image">&#10094;</button>
+                <button type="button" class="lightbox-next" aria-label="Next image">&#10095;</button>
+            </div>
+            <aside class="lightbox-info">
+                <p class="lightbox-counter"></p>
+                <div class="lightbox-text"></div>
+                <a class="lightbox-fullres" target="_blank" rel="noopener">Open full-resolution image <small></small></a>
+            </aside>
+            <button type="button" class="lightbox-close" aria-label="Close">&#10005;</button>
         </div>
 
         <!-- Footer -->
@@ -144,5 +556,110 @@
         <script src="assets/js/breakpoints.min.js"></script>
         <script src="assets/js/util.js"></script>
         <script src="assets/js/main.js"></script>
+        <script>
+            (function () {
+                var items = Array.prototype.slice.call(document.querySelectorAll('.gallery-item'));
+                var box = document.querySelector('.lightbox');
+                var img = box.querySelector('.lightbox-stage img');
+                var spinner = box.querySelector('.lightbox-spinner');
+                var counter = box.querySelector('.lightbox-counter');
+                var text = box.querySelector('.lightbox-text');
+                var fullres = box.querySelector('.lightbox-fullres');
+                var closeBtn = box.querySelector('.lightbox-close');
+                var current = -1;
+                var lastFocus = null;
+
+                function link(i) { return items[i].querySelector('a'); }
+
+                function show(i) {
+                    current = (i + items.length) % items.length;
+                    var a = link(current);
+                    var thumb = a.querySelector('img');
+
+                    spinner.hidden = false;
+                    img.style.opacity = '0.4';
+                    img.src = thumb.currentSrc || thumb.src; // show the thumbnail instantly while the preview loads
+                    img.alt = thumb.alt;
+                    var preview = new Image();
+                    preview.onload = function () {
+                        if (current !== items.indexOf(a.parentNode)) return;
+                        img.src = preview.src;
+                        img.style.opacity = '';
+                        spinner.hidden = true;
+                    };
+                    preview.src = a.getAttribute('data-preview') || a.href;
+
+                    var caption = items[current].querySelector('figcaption').cloneNode(true);
+                    text.innerHTML = caption.innerHTML;
+                    counter.textContent = (current + 1) + ' / ' + items.length;
+                    fullres.href = a.href;
+                    fullres.querySelector('small').textContent = a.getAttribute('data-size') || '';
+                    box.querySelector('.lightbox-info').scrollTop = 0;
+
+                    if (history.replaceState) history.replaceState(null, '', '#' + items[current].id);
+
+                    // Warm up the neighbours so arrowing through feels instant
+                    [current - 1, current + 1].forEach(function (j) {
+                        var n = link((j + items.length) % items.length);
+                        new Image().src = n.getAttribute('data-preview') || n.href;
+                    });
+                }
+
+                function open(i) {
+                    lastFocus = document.activeElement;
+                    box.hidden = false;
+                    document.body.style.overflow = 'hidden';
+                    show(i);
+                    requestAnimationFrame(function () { box.classList.add('is-open'); });
+                    closeBtn.focus();
+                }
+
+                function close() {
+                    box.classList.remove('is-open');
+                    box.hidden = true;
+                    document.body.style.overflow = '';
+                    current = -1;
+                    if (history.replaceState) history.replaceState(null, '', location.pathname + location.search);
+                    if (lastFocus) lastFocus.focus();
+                }
+
+                items.forEach(function (item, i) {
+                    item.addEventListener('click', function (e) {
+                        // Let text links inside the caption work normally
+                        if (e.target.closest('figcaption a')) return;
+                        e.preventDefault();
+                        open(i);
+                    });
+                });
+
+                closeBtn.addEventListener('click', close);
+                box.querySelector('.lightbox-prev').addEventListener('click', function () { show(current - 1); });
+                box.querySelector('.lightbox-next').addEventListener('click', function () { show(current + 1); });
+                box.querySelector('.lightbox-stage').addEventListener('click', function (e) {
+                    if (e.target === this) close();
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (box.hidden) return;
+                    if (e.key === 'Escape') close();
+                    else if (e.key === 'ArrowLeft') show(current - 1);
+                    else if (e.key === 'ArrowRight') show(current + 1);
+                });
+
+                // Swipe left/right on touch screens
+                var touchX = null;
+                box.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; }, { passive: true });
+                box.addEventListener('touchend', function (e) {
+                    if (touchX === null) return;
+                    var dx = e.changedTouches[0].clientX - touchX;
+                    touchX = null;
+                    if (Math.abs(dx) > 50 && !e.target.closest('.lightbox-info')) show(current + (dx < 0 ? 1 : -1));
+                });
+
+                // Open directly to an image when the URL has its #id (e.g. science_art.html#dr1-milky-way)
+                var fromHash = items.findIndex(function (it) { return '#' + it.id === location.hash; });
+                if (fromHash >= 0) open(fromHash);
+            })();
+        </script>
     </body>
 </html>
